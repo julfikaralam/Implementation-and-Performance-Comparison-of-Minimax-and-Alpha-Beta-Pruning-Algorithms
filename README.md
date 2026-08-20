@@ -116,7 +116,7 @@ The complete implementation of Minimax and Alpha-Beta Pruning algorithms is writ
 
 The source code is available here:
 
-[Click here to view Python Implementation](minimax_alpha_beta.py)
+[Click here to view Python Implementation](alphabeta.py)
 
 ---
 
@@ -179,7 +179,7 @@ The program was tested using randomly generated binary game trees. Both Minimax 
 
 ### Output Screenshot
 
-![Test Case 1 Output](screenshots/test_case_1.png)
+![Test Case 1 Output](alpha1.png)
 
 ---
 
