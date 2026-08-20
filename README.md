@@ -255,6 +255,6 @@ Possible improvements include:
 
 # 👨‍💻 Author
 
-**Md. Julfikar Alam**
-Student of GUB
-Department of Computer Science and Engineering
+**Md. Julfikar Alam**,
+Student of GUB,
+Department of Computer Science and Engineering.
