@@ -1,9 +1,11 @@
-# Implementation-and-Performance-Comparison-of-Minimax-and-Alpha-Beta-Pruning-Algorithms
-Implementation and Performance Comparison of Minimax and Alpha-Beta Pruning Algorithms Using a Random Binary Game Tree
+
+# Implementation and Performance Comparison of Minimax and Alpha-Beta Pruning Algorithms
+
+Implementation and Performance Comparison of Minimax and Alpha-Beta Pruning Algorithms Using a Random Binary Game Tree.
 
 ---
 
-## 🎯 Objectives
+# 🎯 Objectives
 
 The objectives of this project are:
 
@@ -11,15 +13,17 @@ The objectives of this project are:
 - To implement Alpha-Beta Pruning as an optimization technique.
 - To generate a random binary game tree with leaf node scores.
 - To compare the performance of Minimax and Alpha-Beta Pruning.
-- To calculate the efficiency improvement of Alpha-Beta Pruning.
+- To calculate the efficiency improvement achieved by Alpha-Beta Pruning.
 
 ---
 
-## 📝 Problem Statement
+# 📝 Problem Statement
 
-In Artificial Intelligence, game-playing agents need to make optimal decisions by exploring possible future states. The Minimax algorithm is commonly used for this purpose, but it becomes inefficient for large game trees because it evaluates every possible node.
+In Artificial Intelligence, game-playing agents need to make optimal decisions by exploring possible future states. The Minimax algorithm is widely used for this purpose, but it becomes inefficient for large game trees because it evaluates every possible node.
 
-Alpha-Beta Pruning improves Minimax by eliminating branches that cannot affect the final decision. In this project, both algorithms are applied to the same randomly generated binary game tree to find the optimal value and compare their efficiency.
+Alpha-Beta Pruning improves the Minimax algorithm by eliminating branches that cannot affect the final decision.
+
+In this project, both algorithms are applied to the same randomly generated binary game tree to determine the optimal value. The program also counts evaluated nodes, pruned nodes, and calculates the efficiency improvement of Alpha-Beta Pruning compared to Minimax.
 
 ---
 
@@ -37,217 +41,221 @@ Minimax is a recursive decision-making algorithm used in two-player games.
 
 1. Start from the root node.
 2. Recursively explore child nodes.
-3. MAX selects the highest value.
-4. MIN selects the lowest value.
-5. Return the final optimal value.
+3. MAX selects the maximum value.
+4. MIN selects the minimum value.
+5. Return the optimal decision value.
 
 ---
 
 ## 2. Alpha-Beta Pruning Algorithm
 
-Alpha-Beta Pruning is an optimized version of the Minimax algorithm.
+Alpha-Beta Pruning is an optimization technique applied to the Minimax algorithm.
 
-It reduces unnecessary calculations by ignoring branches that do not influence the final decision.
+It reduces unnecessary calculations by ignoring branches that cannot influence the final result.
 
 ### Working Steps:
 
 1. Maintain two values:
-   - Alpha: Best value for MAX player.
-   - Beta: Best value for MIN player.
+   - Alpha: Best value found by MAX player.
+   - Beta: Best value found by MIN player.
 2. Evaluate child nodes recursively.
 3. Update alpha and beta values.
-4. Skip branches when further searching is unnecessary.
+4. Prune unnecessary branches when:
+
+```
+Beta <= Alpha
+```
+
 5. Return the optimal value.
 
 ---
 
 # ⚙️ Implementation Details
 
-### Programming Language
+## Programming Language
 
 - Python 3
 
-### Libraries Used
+## Libraries Used
 
 | Library | Purpose |
 |---------|---------|
 | random | Generate random leaf node values |
 | math | Calculate tree depth |
 
-### Tree Configuration
+## Tree Configuration
 
 - Binary game tree
-- 16 leaf nodes
-- Randomly generated node scores
+- Randomly generated leaf node scores
+- Supports 8 and 16 leaf nodes
 - Automatic tree depth calculation
 
 ---
-## 💻 Source Code Implementation
 
-The complete implementation of **Minimax** and **Alpha-Beta Pruning** algorithms is written in Python.
+# 📂 Project Structure
 
-```python
-import random
-import math
-
-
-def minimax(curDepth, nodeIndex, maxTurn, scores, targetDepth, counter):
-    # Leaf node
-    if curDepth == targetDepth:
-        counter[0] += 1
-        return scores[nodeIndex]
-
-    if maxTurn:
-        return max(
-            minimax(curDepth + 1, nodeIndex * 2, False, scores, targetDepth, counter),
-            minimax(curDepth + 1, nodeIndex * 2 + 1, False, scores, targetDepth, counter)
-        )
-
-    else:
-        return min(
-            minimax(curDepth + 1, nodeIndex * 2, True, scores, targetDepth, counter),
-            minimax(curDepth + 1, nodeIndex * 2 + 1, True, scores, targetDepth, counter)
-        )
-
-
-def alphabeta(curDepth, nodeIndex, isMax, scores, targetDepth, alpha, beta, counter, prune):
-    if curDepth == targetDepth:
-        counter[0] += 1
-        return scores[nodeIndex]
-
-    if isMax:
-        best = -999999
-
-        val = alphabeta(
-            curDepth + 1,
-            nodeIndex * 2,
-            False,
-            scores,
-            targetDepth,
-            alpha,
-            beta,
-            counter,
-            prune
-        )
-
-        best = max(best, val)
-        alpha = max(alpha, best)
-
-        if beta <= alpha:
-            prune[0] += 2 ** (targetDepth - curDepth - 1)
-            return best
-
-        val = alphabeta(
-            curDepth + 1,
-            nodeIndex * 2 + 1,
-            False,
-            scores,
-            targetDepth,
-            alpha,
-            beta,
-            counter,
-            prune
-        )
-
-        best = max(best, val)
-
-        return best
-
-    else:
-        best = 999999
-
-        val = alphabeta(
-            curDepth + 1,
-            nodeIndex * 2,
-            True,
-            scores,
-            targetDepth,
-            alpha,
-            beta,
-            counter,
-            prune
-        )
-
-        best = min(best, val)
-        beta = min(beta, best)
-
-        if beta <= alpha:
-            prune[0] += 2 ** (targetDepth - curDepth - 1)
-            return best
-
-        val = alphabeta(
-            curDepth + 1,
-            nodeIndex * 2 + 1,
-            True,
-            scores,
-            targetDepth,
-            alpha,
-            beta,
-            counter,
-            prune
-        )
-
-        best = min(best, val)
-
-        return best
-
-
-# Generate random leaf nodes
-n = random.choice([8, 16])
-
-scores = [random.randint(1, 25) for _ in range(n)]
-
-treeDepth = int(math.log2(n))
-
-print("Generated Leaf Nodes:", scores)
-
-
-# Minimax Execution
-minimax_counter = [0]
-
-minimax_value = minimax(
-    0,
-    0,
-    True,
-    scores,
-    treeDepth,
-    minimax_counter
-)
-
-print("\nMinimax:")
-print("Nodes Evaluated:", minimax_counter[0])
-print("Optimal Value:", minimax_value)
-
-
-# Alpha-Beta Execution
-alpha_counter = [0]
-pruned_nodes = [0]
-
-alpha_beta_value = alphabeta(
-    0,
-    0,
-    True,
-    scores,
-    treeDepth,
-    -999999,
-    999999,
-    alpha_counter,
-    pruned_nodes
-)
-
-print("\nAlpha-Beta Pruning:")
-print("Nodes Evaluated:", alpha_counter[0])
-print("Nodes Pruned:", pruned_nodes[0])
-
-
-# Efficiency Calculation
-improvement = (
-    (minimax_counter[0] - alpha_counter[0])
-    /
-    minimax_counter[0]
-) * 100
+```
+Minimax-AlphaBeta-Pruning/
+│
+├── minimax_alpha_beta.py      # Main Python implementation
+│
+├── README.md                  # Project documentation
+│
+└── screenshots/               # Output screenshots
+    │
+    ├── test_case_1.png
+    │
+    └── test_case_2.png
+```
 
 ---
 
-![image alt](alph1.png)
-![image alt](alph2.png)
+# 💻 Source Code Implementation
+
+The complete implementation of Minimax and Alpha-Beta Pruning algorithms is written in Python.
+
+The source code is available here:
+
+[Click here to view Python Implementation](minimax_alpha_beta.py)
+
+---
+
+# ▶️ How to Run the Project
+
+### Step 1: Clone the repository
+
+```bash
+git clone https://github.com/yourusername/Minimax-AlphaBeta-Pruning.git
+```
+
+### Step 2: Open the project folder
+
+```bash
+cd Minimax-AlphaBeta-Pruning
+```
+
+### Step 3: Run the Python program
+
+```bash
+python minimax_alpha_beta.py
+```
+
+---
+
+# 🧪 Test Results
+
+The program was tested using randomly generated binary game trees. Both Minimax and Alpha-Beta Pruning algorithms were executed on the same tree.
+
+---
+
+# Test Case 1
+
+## Generated Leaf Nodes
+
+```
+[3, 16, 18, 7, 9, 6, 1, 1]
+```
+
+## Minimax Result
+
+| Parameter | Value |
+|-----------|-------|
+| Nodes Evaluated | 8 |
+| Optimal Value | 16 |
+
+## Alpha-Beta Pruning Result
+
+| Parameter | Value |
+|-----------|-------|
+| Nodes Evaluated | 5 |
+| Nodes Pruned | 3 |
+| Optimal Value | 16 |
+
+## Efficiency Improvement
+
+```
+37.5%
+```
+
+### Output Screenshot
+
+![Test Case 1 Output](screenshots/test_case_1.png)
+
+---
+
+# Test Case 2
+
+## Generated Leaf Nodes
+
+```
+[13, 20, 17, 13, 20, 11, 1, 1, 5, 24, 17, 18, 24, 25, 16, 14]
+```
+
+## Minimax Result
+
+| Parameter | Value |
+|-----------|-------|
+| Nodes Evaluated | 16 |
+| Optimal Value | 17 |
+
+## Alpha-Beta Pruning Result
+
+| Parameter | Value |
+|-----------|-------|
+| Nodes Evaluated | 12 |
+| Nodes Pruned | 4 |
+| Optimal Value | 17 |
+
+## Efficiency Improvement
+
+```
+25%
+```
+
+### Output Screenshot
+
+![Test Case 2 Output](screenshots/test_case_2.png)
+
+---
+
+# 📈 Efficiency Calculation
+
+The efficiency improvement is calculated using:
+
+```
+Efficiency Improvement =
+((Minimax Nodes Evaluated - Alpha-Beta Nodes Evaluated)
+ / Minimax Nodes Evaluated) × 100
+```
+
+---
+
+# 💡 Discussion and Conclusion
+
+In this project, Minimax and Alpha-Beta Pruning algorithms were implemented and compared using the same binary game tree.
+
+Both algorithms produced the same optimal value, which proves that Alpha-Beta Pruning improves the performance without changing the final decision.
+
+Minimax evaluates all possible nodes, which increases computation time for larger trees. Alpha-Beta Pruning reduces unnecessary calculations by removing branches that do not affect the final result.
+
+Therefore, Alpha-Beta Pruning is a more efficient approach for solving large search problems in Artificial Intelligence.
+
+---
+
+# 🚀 Future Improvements
+
+Possible improvements include:
+
+- Adding graphical visualization of the game tree.
+- Comparing execution time between algorithms.
+- Supporting different tree sizes.
+- Adding heuristic evaluation functions.
+
+---
+
+# 👨‍💻 Author
+
+**Md. Julfikar Alam**
+
+Artificial Intelligence Lab  
+Department of Computer Science and Engineering
