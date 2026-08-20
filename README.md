@@ -179,7 +179,7 @@ The program was tested using randomly generated binary game trees. Both Minimax 
 
 ### Output Screenshot
 
-![Test Case 1 Output](alpha1.png)
+![image alt](alph1.png)
 
 ---
 
@@ -214,7 +214,7 @@ The program was tested using randomly generated binary game trees. Both Minimax 
 
 ### Output Screenshot
 
-![Test Case 2 Output](screenshots/test_case_2.png)
+![image alt](alph2.png)
 
 ---
 
