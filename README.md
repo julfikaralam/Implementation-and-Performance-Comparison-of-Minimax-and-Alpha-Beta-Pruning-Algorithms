@@ -256,6 +256,5 @@ Possible improvements include:
 # 👨‍💻 Author
 
 **Md. Julfikar Alam**
-
-Artificial Intelligence Lab  
+Student of GUB
 Department of Computer Science and Engineering
